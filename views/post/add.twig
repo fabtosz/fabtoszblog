@@ -1,0 +1,24 @@
+{% extends 'base.twig' %}
+
+{% block title %}
+    <h2>{{ title }}</h2>
+{% endblock %}
+
+{% block body %}
+
+	<h3 style="background-color: green">{{ flash|raw }}</h3>
+
+    {% for error in errors %}
+        <li style="background-color: red">{{ error }}</li>
+    {% endfor %}
+	
+    <form method="post" action="" id="post_form">
+		tytuł: <input type="text" name="title"><br/>
+		treść: <textarea rows="4" cols="50" name="content" form="post_form"></textarea><br/>
+		autor: <input type="text" name="author"><br/>
+		kategoria: <input type="text" name="categoryId"><br/>
+        <input type="submit" value="Dodaj post">
+    </form>
+
+
+{% endblock %}

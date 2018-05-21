@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Strona główna{% endblock %}</title>
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+	    <div id="login" style="background-color: gray;">
+            {% block loginbar %}
+				{% if userId is not null %}
+				Witaj użytkowniku {{ username }} |id: {{ userId }} !<b><a href="/logout">Wyloguj</a></li></b>
+				{% else %}
+				<a href="/login">Zaloguj się</a></li>
+				{% endif %}
+				
+            {% endblock %}
+        </div>
+        <div id="sidebar" style="background-color: #ededed;">
+            {% block sidebar %}
+			<div style="background-color: orangel">
+			</div>
+                <ul>
+					<li><a href="/">Główna</a></li>
+                    <li><a href="/user/add">Dodaj użytkownika</a></li>
+					<li><a href="/post/add">Dodaj post</a></li>
+                </ul>
+            {% endblock %}
+        </div>
+
+        <div id="content" style="background-color: #f9f9f9;">
+            {% block body %}
+				<h3 style="background-color: green">{{ flash }}</h3>
+				<h3>Witamy na stronie głównej!<h3/>
+				
+				<h2>Ostatnie posty</h2>
+				
+				{% for post in posts %}
+					<div style="border-top-style: dotted; border-right-style: solid; border-bottom-style: dotted; border-left-style: solid; background-color: #f7fbff;">
+						<h3><a href="/post/{{ post.id}}">{{ post.title}}</a></h3>
+						<p>{{ post.content}}</p>
+						<h5>{{ post.author}}</h5>
+						<h5 style="color: gray;">{{ post.publishedAt}}</h5>
+					</div>
+				{% endfor %}
+
+				<nav>
+					<ul class="pagination">
+						<li class="page-item {{ (page == 1) ? 'disabled' : '' }}">
+							<a href="/?page={{ page - 1 }}" class="page-link" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+						{% for i in 1..pages_count %}
+						<li class="page-item {% if page == i%}active{% endif %}"><a href="/?page={{ i }}" class="page-link">{{ i }}</a></li>
+						{% endfor %}
+						<li class="page-item {{ (page == pages_count) ? 'disabled' : '' }}">
+							<a href="/?page={{ page + 1 }}" class="page-link" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+				
+				
+			{% endblock %}
+        </div>
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- jQuery library -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<!-- Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>

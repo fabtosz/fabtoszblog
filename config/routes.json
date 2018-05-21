@@ -1,0 +1,43 @@
+{
+  "admin": {
+	"controller": "Default",
+	"method": "admin",
+	"login": true
+  },
+  "/post/delete/:id": {
+	"controller": "Post",
+	"method": "deletePost",
+	"params": {
+	  "id": "number"
+	}
+  },
+  "post/:id": {
+	"controller": "Post",
+	"method": "showPostWithId",
+	"params": {
+	  "id": "number"
+	}
+  },
+  "post/add": {
+	"controller": "Post",
+	"method": "addPost",
+	"login": true
+  },
+  "user/add": {
+	"controller": "User",
+	"method": "addUser",
+	"login": true
+  },
+  "login": {
+	"controller": "User",
+	"method": "loginPanel"
+  },
+  "logout": {
+	"controller": "User",
+	"method": "logout"
+  },
+  "": {
+	"controller": "Default",
+	"method": "index"
+  }
+}

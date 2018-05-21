@@ -1,0 +1,20 @@
+{% extends 'base.twig' %}
+
+{% block title %}
+    <h2>{{ title }}</h2>
+{% endblock %}
+
+{% block body %}
+
+    <form method="post" action="" id="user_form">
+		
+		username: <input type="text" name="username"><br/>
+		password: <input type="text" name="password"><br/>
+		
+		name: <input type="text" name="name"><br/>
+		group_id: <input type="text" name="group_id"><br/>
+        <input type="submit" value="Dodaj użytkonika">
+		
+    </form>
+
+{% endblock%}
