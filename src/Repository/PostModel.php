@@ -9,13 +9,13 @@ use PDO;
 class PostModel extends AbstractModel {
 	
 	public function insertPost(Post $post){
-		// If the ID is set, we're updating an existing record
+		
         if (isset($post->id)) {
             return $this->updatePost($post);
         }
         $stmt = $this->db->prepare('
             INSERT INTO posts 
-                (title, content, author, publishedAt, category_id) 
+                (title, content, author, publishedAt, categoryId) 
             VALUES 
                 (:title, :content, :author, :publishedAt, :category)
         ');
@@ -29,28 +29,36 @@ class PostModel extends AbstractModel {
 	}
 	
 	public function updatePost(Post $post){
-		if (!isset($post->id)) {
-            // We can't update a record unless it exists...
-            throw new \Exception(
-                'Cannot update post that does not yet exist in the database.'
-            );
-        }
-        $stmt = $this->db->prepare('
-            UPDATE posts
-            SET title = :title,
-                content = :content,
-                author = :author,
-                publishedAt = :publishedAt
-				category = :category
-            WHERE id = :id
-        ');
-        $stmt->bindParam(':title', $post->title);
-        $stmt->bindParam(':content', $post->content);
-        $stmt->bindParam(':author', $post->author);
-        $stmt->bindParam(':publishedAt', $post->publishedAt);
-		$stmt->bindParam(':category', $post->category);
-        $stmt->bindParam(':id', $post->id);
-        return $stmt->execute();
+		
+		try {
+			$sql = "UPDATE posts 
+				SET title = :title, 
+					content = :content, 
+					author = :author,  
+					publishedAt = :publishedAt,  
+					categoryId = :categoryId  
+				WHERE id = :id";
+				
+			$id = $post->getId();
+			$title = $post->getTitle();
+			$contet = $post->getContent();
+			$author = $post->getAuthor();
+			$publishedAt = date("Y-m-d H:i:s");
+			$categoryId = $post->getCategoryId();
+			
+			$stmt = $this->db->prepare($sql);                                  
+			$stmt->bindParam(':title', $title, PDO::PARAM_STR);       
+			$stmt->bindParam(':content', $contet, PDO::PARAM_STR);    
+			$stmt->bindParam(':author', $author, PDO::PARAM_STR);
+			$stmt->bindParam(':publishedAt', $publishedAt, PDO::PARAM_STR); 
+			$stmt->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);   
+			$stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+			
+			return $stmt->execute(); 
+		} catch(PDOException $e) {
+			echo $e->getMessage();
+		}
+
 	}
 	
 	public function deletePost($id){
@@ -64,16 +72,14 @@ class PostModel extends AbstractModel {
 	}
 	
 	public function getPost($id){
-		$stmt = $this->db->prepare('
-            SELECT "Post", posts.* 
-             FROM posts 
-             WHERE id = :id
-        ');
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Post');
 		
-        return $stmt->fetch(PDO::FETCH_OBJ);
+		$stmt = $this->db->prepare("SELECT * FROM posts WHERE id = :id");
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'FabtoszBlog\Entity\Post'); //zeby nie wywolywal sie domyslny kontruktor
+		$stmt->execute();
+		$post = $stmt->fetch();
+		
+		return $post;
 	}
 	
 	public function getAllPosts(){
@@ -102,32 +108,6 @@ class PostModel extends AbstractModel {
         return $stmt->fetchAll();
 	}
 	
-	//Próba stworzenia systemu paginacji za pomocą wydajnej Seek Method
-	//Niestety działa tylko z unikalnymi rekordami, więc nie można stosować
-	//gdy unikalne rekordy posiadają duplikaty i są luki między nimi
-	/*
-	public function getPostsByPage($page, $records_per_page, $first, $last) {
-		
-		$firstId = $this->getFirstPostId();
-		$recordsCount = $this->getPostsCount();
-		$pagesCount = ceil($recordsCount/$records_per_page);
-		
-		$offset = $firstId + ($page * $records_per_page);
-		$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
-		$stmt = $this->db->prepare('
-            SELECT * FROM posts
-			WHERE id < :offset
-			LIMIT :records_per_page
-        ');
-		$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-		$stmt->bindParam(':records_per_page', $records_per_page, PDO::PARAM_INT);
-        $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Post');
-        
-        return $stmt->fetchAll();
-		
-	}
-	*/
 	public function getPostsByPage($page, $records_per_page) {
 		
 		$totalRecords = $this->getPostsCount();
@@ -143,8 +123,6 @@ class PostModel extends AbstractModel {
 		$stmt->bindParam(':records_per_page', $records_per_page, PDO::PARAM_INT);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'Post');
-        
-        //return $stmt->fetchAll();
 		
 		return [
 			'records' => $stmt->fetchAll(),

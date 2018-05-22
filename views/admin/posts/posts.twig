@@ -1,0 +1,55 @@
+{% extends 'admin/panel.twig' %}
+
+{% block content %}
+		<h1>Posty</h1>
+		<hr/>
+		<h2>Panel - Posty</h2>
+		
+		<h3 style="background-color: green">{{ flash|raw }}</h3>
+		
+		<a href="/post/add">
+			<button>Dodaj post</button>
+		</a> 
+		<input type="text" value="Szukaj..."></input>
+				
+		<nav style="float: right;">
+			<a href="/admin/posts?page={{ page_number - 1 }}" >
+				<button {{ (page_number == 1) ? 'disabled' : '' }}>Poprzednie</button>
+			</a>
+			{% for i in 1..pages_count %}
+			<a href="/admin/posts?page={{ i }}" >
+				<button>{{ i }}</button>
+			</a>
+			{% endfor %}
+			<a href="/admin/posts?page={{ page_number + 1 }}">
+				<button  {{ (page_number == pages_count) ? 'disabled' : '' }}>Następne</button>
+			</a>
+		</nav>	
+		
+		<table>
+		  <tr>
+			<th>Tytuł</th>
+			<th>Status(TODO)</th>
+			<th>Autor</th>
+			<th>Liczba komentarzy(TODO)</th>
+			<th>Liczba wyświetleń(TODO)</th>
+			<th>Opublikowano</th>
+		  </tr>
+		  {% for post in posts %}
+		  <tr>
+			<td>
+				<p>{{ post.title}}</p>
+				<a href="/post/{{ post.id }}">Podgląd</a>
+				<a href="/post/edit/{{ post.id }}">Edytuj</a>
+				<a href="/post/delete/{{ post.id }}">Usuń</a>
+			</td>
+			<td>{# TODO #}</td>
+			<td>{{ post.author}}</td>
+			<td>{# TODO #}</td>
+			<td>{# TODO #}</td>
+			<td>{{ post.publishedAt}}</td>
+		  </tr>
+		  {% endfor %}
+		</table>	
+
+{% endblock %}

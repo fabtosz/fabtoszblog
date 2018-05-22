@@ -4,13 +4,9 @@ namespace FabtoszBlog\Controller;
 
 use FabtoszBlog\Controller\AbstractController;
 use FabtoszBlog\Repository\PostModel;
-use FabtoszBlog\Repository\Paginator;
+//use FabtoszBlog\Repository\Paginator;
 
 class DefaultController extends AbstractController{
-	
-	public function admin() {
-		return $this->render('/admin/panel.twig', []);
-	}
 	
 	public function index() {
 		

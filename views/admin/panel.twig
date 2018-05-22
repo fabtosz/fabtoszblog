@@ -6,6 +6,7 @@
     <body>
 	<div class="sidebar" style="float: left; background-color: gray; height: 100%; width: 160px; top: 0; left: 0;">
 	<ul>
+		<li><a href="/admin">Panel</a></li>
 		<li><a href="/admin/posts">Posty</a></li>
 		<li><a href="/admin/albums">Albumy</a></li>
 		<li><a href="/admin/reviews">Recenzje</a></li>
@@ -14,58 +15,11 @@
 	</ul>
 	</div>
 	<div class="content" style="float: left;">
-		<h1>Panel administratora</h1>
-		<button>Dodaj post</button>
-		<input type="text" value="Szukaj..."></input>
-		<table>
-		  <tr>
-			<th>Tytuł</th>
-			<th>Status</th>
-			<th>Autor</th>
-			<th>Liczba komentarzy</th>
-			<th>Liczba wyświetleń</th>
-			<th>Opublikowano</th>
-		  </tr>
-		  <tr>
-			<td>
-				<p>Nowa płyta Rae Sremmurd</p>
-				<a href="/admin/posts">Podgląd</a>
-				<a href="/admin/posts">Edytuj</a>
-				<a href="/admin/posts">Usuń</a>
-			</td>
-			<td>Wersja robocza</td>
-			<td>Bartosz Fabiański</td>
-			<td>2</td>
-			<td>12</td>
-			<td>19.05.2018</td>
-		  </tr>
-		  <tr>
-			<td>
-				<p>Nowa płyta Rae Sremmurd</p>
-				<a href="/admin/posts">Podgląd</a>
-				<a href="/admin/posts">Edytuj</a>
-				<a href="/admin/posts">Usuń</a>
-			</td>
-			<td>Wersja robocza</td>
-			<td>Bartosz Fabiański</td>
-			<td>2</td>
-			<td>12</td>
-			<td>19.05.2018</td>
-		  </tr>
-		  <tr>
-			<td>
-				<p>Nowa płyta Rae Sremmurd</p>
-				<a href="/admin/posts">Podgląd</a>
-				<a href="/admin/posts">Edytuj</a>
-				<a href="/admin/posts">Usuń</a>			
-			</td>
-			<td>Wersja robocza</td>
-			<td>Bartosz Fabiański</td>
-			<td>2</td>
-			<td>12</td>
-			<td>19.05.2018</td>
-		  </tr>
-		</table>
+	{% block content %}
+	<h1>Panel</h1>
+	<hr/>
+	Wybierz jedną z sekcji po lewej stronie.
+	{% endblock %}
 	</div>
 	</body>
 </html>

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2>Nowy post</h2>
+<h2>Edytuj post</h2>
 <hr/>
 	<h3 style="background-color: green">{{ flash|raw }}</h3>
 
@@ -11,11 +11,11 @@
     {% endfor %}
 	
     <form method="post" action="" id="post_form">
-		tytuł: <input type="text" name="title"><br/>
-		treść: <textarea rows="4" cols="50" name="content" form="post_form"></textarea><br/>
-		autor: <input type="text" name="author"><br/>
-		kategoria: <input type="text" name="categoryId"><br/>
-        <input type="submit" value="Dodaj post">
+		tytuł: <input type="text" name="title" value="{{ post.title}}"><br/>
+		treść: <textarea rows="4" cols="50" name="content" form="post_form">{{ post.content}}</textarea><br/>
+		autor: <input type="text" name="author" value="{{ post.author }}"><br/>
+		kategoria: <input type="text" name="categoryId" value="{{ post.categoryId }}"><br/>
+        <input type="submit" value="Aktualizuj">
     </form>
 	
 	<a href="/admin/posts">

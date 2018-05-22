@@ -1,10 +1,22 @@
 {
   "admin": {
-	"controller": "Default",
-	"method": "admin",
+	"controller": "Admin",
+	"method": "panel",
 	"login": true
   },
-  "/post/delete/:id": {
+  "admin/posts": {
+	"controller": "Admin",
+	"method": "posts",
+	"login": true
+  },
+  "post/edit/:id": {
+	"controller": "Post",
+	"method": "editPost",
+	"params": {
+	  "id": "number"
+	}
+  },
+  "post/delete/:id": {
 	"controller": "Post",
 	"method": "deletePost",
 	"params": {
