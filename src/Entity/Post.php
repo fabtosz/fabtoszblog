@@ -4,12 +4,14 @@ namespace FabtoszBlog\Entity;
 
 class Post {
 	
-	public $id;
-	public $title;
-	public $content;
-	public $author;
-	public $publishedAt;
-	public $categoryId;
+	private $id;
+	private $title;
+	private $content;
+	private $author;
+	private $publishedAt;
+	private $categoryId;
+	//tu jeszcze pomyślimy ale raczej tak to będzie wyglądać
+	private $comments = [];
 	
 	public function __construct($data = null){
 		if(isset($data['id'])) {
@@ -18,8 +20,6 @@ class Post {
 		$this->title = $data['title'];
 		$this->content = $data['content'];
 		$this->author = $data['author'];
-		//$this->publishedAt = $data['publishedAt'];
-		//$this->categoryId = $data['categoryId'];
 	} 
 
 	public function setId($id) {
@@ -64,5 +64,12 @@ class Post {
 		return $this->categoryId;
 	}
 	
+	public function getComments(){
+		return $this->comments;
+	}
+	
+	public function setComments($comments){
+		$this->comments = $comments;
+	}
 
 }

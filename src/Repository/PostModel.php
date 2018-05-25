@@ -19,11 +19,18 @@ class PostModel extends AbstractModel {
             VALUES 
                 (:title, :content, :author, :publishedAt, :category)
         ');
-        $stmt->bindParam(':title', $post->title);
-        $stmt->bindParam(':content', $post->content);
-        $stmt->bindParam(':author', $post->author);
-        $stmt->bindParam(':publishedAt', $post->publishedAt);
-		$stmt->bindParam(':category', $post->category);
+
+		$title = $post->getTitle();
+		$contet = $post->getContent();			
+		$author = $post->getAuthor();
+		$publishedAt = date("Y-m-d H:i:s");
+		$categoryId = $post->getCategoryId();
+			
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':content', $contet);
+        $stmt->bindParam(':author', $author);
+        $stmt->bindParam(':publishedAt', $publishedAt);
+		$stmt->bindParam(':category', $categoryId);
 		
         return $stmt->execute();
 	}

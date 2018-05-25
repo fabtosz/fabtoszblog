@@ -7,6 +7,17 @@
   "admin/posts": {
 	"controller": "Admin",
 	"method": "posts",
+	"params": {
+	  "id": "number"
+	},
+	"login": true
+  },
+  "admin/show/post/:id": {
+	"controller": "Admin",
+	"method": "showPost",
+	"params": {
+	  "id": "number"
+	},
 	"login": true
   },
   "post/edit/:id": {

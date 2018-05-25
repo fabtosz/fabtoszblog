@@ -1,0 +1,23 @@
+{% extends 'admin/panel.twig' %}
+
+{% block content %}
+		<h1>{{ post.title}}</h1>
+		<hr/>
+		<h2>Dodano - {{ post.publishedAt}}</h2>
+		
+		<h3 style="background-color: green">{{ flash|raw }}</h3>
+		
+		<a href="/admin/posts">
+			<button>Wróć do listy postów</button>
+		</a> 
+		
+		<p>
+		{{ post.content }}
+		</p>
+		<span>Dodano: {{ post.publishedAt}}</span>
+
+		<h3>Komentarze</h3>
+		{% for comment in post.comments %}
+			<p style="border-left: 6px solid red; background-color: lightgrey;">{{ comment.content }}<br/>{{ comment.author }}</p>
+		{% endfor %}
+{% endblock %}

@@ -30,9 +30,9 @@ class CommentModel extends AbstractModel {
 	public function getAllCommentsByPostId($postId){
 		$stmt = $this->db->prepare('
             SELECT * FROM comments
-			WHERE post_id = :post_id
+			WHERE postId = :postId
         ');
-		$stmt->bindParam(':post_id', $postId);
+		$stmt->bindParam(':postId', $postId);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'Comment');
         

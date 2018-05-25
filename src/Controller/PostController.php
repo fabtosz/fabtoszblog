@@ -24,15 +24,6 @@ class PostController extends AbstractController{
 		$postModel = new PostModel($this->di);
 		$post = $postModel->getPost($id);
 		
-		$properties = [
-			'title' => $post->title,
-			'content' => $post->content,
-			'author' => $post->author,
-			'publishedAt' => $post->publishedAt,
-			'categoryId' => $post->categoryId
-		];
-	
-		//Dodaj komentarz do posta
 		if($this->request->isPost()){
 			
 			$formData = $this->request->getParams();
@@ -57,8 +48,6 @@ class PostController extends AbstractController{
 				$commentModel = new CommentModel($this->di);
 				$commentModel->insertComment($comment);
 				
-				//$postId = $this->db->lastInsertId();
-				
 				$this->request->getSession()->flash('comment_info', "Komentarz został dodany.");
 				
 			} else {
@@ -70,16 +59,17 @@ class PostController extends AbstractController{
 			}
 
 		} 
-		//////////////////////////
+		
 		$commentModel = new CommentModel($this->di);
 		$comments = $commentModel->getAllCommentsByPostId($id);
-		//var_dump($comments);die;
+		$post->setComments($comments);
 		
-		//////////////////////////
 		$flash = $this->request->getSession()->flash('comment_info');
-		$properties['flash'] = $flash;
-		$properties['comments'] = $comments;
-		return $this->render('post/show.twig', $properties);
+		
+		return $this->render('post/show.twig', [
+			'post' => $post,
+			'flash' => $flash
+		]);
 	}
 	
 	public function addPost() {		
@@ -109,7 +99,7 @@ class PostController extends AbstractController{
 		
 			if($validator->isValid()) {
 				$post = new Post($formData);
-				$post->publishedAt = date("Y-m-d H:i:s");
+				$post->setPublishedAt(date("Y-m-d H:i:s"));
 				
 				$postModel = new PostModel($this->di);
 				$postModel->insertPost($post);
@@ -139,7 +129,7 @@ class PostController extends AbstractController{
 		
 		$postModel = new PostModel($this->di);
 		$post = $postModel->getPost($id);
-		$postId = $post->id;
+		$postId = $post->getId();
 		
 		if($this->request->isPost()){
 			
@@ -165,23 +155,13 @@ class PostController extends AbstractController{
 			));
 		
 			if($validator->isValid()) {
-				/*
-				$post = new Post($formData);
-				$post->publishedAt = date("Y-m-d H:i:s");
-				$post->id = $postId;
-				*/
 				
-				//var_dump($formData);die;
-				//array(4) { ["title"]=> string(4) "test" ["content"]=> string(5) "test2" ["author"]=> string(5) "test3" ["categoryId"]=> string(5) "test4" } 
-				//$post->
 				$post->setTitle($formData["title"]);
 				$post->setContent($formData["content"]);
 				$post->setAuthor($formData["author"]);
 				$post->setCategoryId($formData["categoryId"]);
 				
-				/*
-				echo '<pre>', var_dump($post), '</pre>';
-				*/
+				
 				$postModel->updatePost($post);
 				
 				$this->request->getSession()->flash('post_info', "Post został zaktualizowany. ");

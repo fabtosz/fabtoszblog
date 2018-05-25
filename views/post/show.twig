@@ -1,7 +1,7 @@
 {% extends 'base.twig' %}
 
 {% block title %}
-    <h2>{{ title }}</h2>
+    <h2>{{ post.title }}</h2>
 {% endblock %}
 
 {% block body %}
@@ -12,17 +12,17 @@
         <li style="background-color: red">{{ error }}</li>
     {% endfor %}
 	
-	<h1>{{ title }}</h1>
+	<h1>{{ post.title }}</h1>
 	<p>
-	{{ content|raw }}
+	{{ post.content|raw }}
 	</p>
 	
-	<span>{{author}} | {{publishedAt}} | {{categoryId}}</span>
+	<span>{{post.author}} | {{post.publishedAt}} | {{post.categoryId}}</span>
 			
 	<h4>Komentarze</h4>
 	
-	{% for comment in comments %}
-		<p style="border-left: 6px solid red; background-color: lightgrey;">{{ comment.comment }}<br/>{{ comment.author }}</p>
+	{% for comment in post.comments %}
+		<p style="border-left: 6px solid red; background-color: lightgrey;">{{ comment.content }}<br/>{{ comment.author }}</p>
     {% endfor %}
 	
     <form method="post" action="" id="comment_form">

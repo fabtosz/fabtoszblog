@@ -4,6 +4,7 @@ namespace FabtoszBlog\Controller;
 
 //use FabtoszBlog\Controller\AbstractController;
 use FabtoszBlog\Repository\PostModel;
+use FabtoszBlog\Repository\CommentModel;
 //use FabtoszBlog\Repository\Paginator;
 
 class AdminController extends AbstractController{
@@ -17,6 +18,7 @@ class AdminController extends AbstractController{
 		$postModel = new PostModel($this->di);
 		
 		$page = ($this->request->getParams()['page']) ?? 1;
+	
 		$pagination = $postModel->getPostsByPage($page, 5);
 		
 		$flash = $this->request->getSession()->flash('post_info');
@@ -27,6 +29,20 @@ class AdminController extends AbstractController{
 			'pages_count' => $pagination['pages_count'],
 			'flash' => $flash
 		]);
+	}
+	
+	public function showPost($id) {
+		$postModel = new PostModel($this->di);
+		$post = $postModel->getPost($id);
+		
+		$commentModel = new CommentModel($this->di);
+		$comments = $commentModel->getAllCommentsByPostId($id);
+		$post->setComments($comments);
+		
+		return $this->render('admin/posts/show.twig', [
+			'post' => $post
+		]);
+		
 	}
 
 }

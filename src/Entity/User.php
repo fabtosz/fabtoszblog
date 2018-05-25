@@ -9,7 +9,6 @@ class User {
 	public $password;
 	public $name;
 	public $group_id;
-	public $isLoggedIn;
 	
 	public function __construct($data = null){
 		if(isset($data['id'])) {
@@ -19,7 +18,6 @@ class User {
 		$this->password = $data['password'];
 		$this->name = $data['name'];
 		$this->group_id = $data['group_id'];
-		$this->isLoggedIn = $data['isLoggedIn'];
 	} 
 
 }
