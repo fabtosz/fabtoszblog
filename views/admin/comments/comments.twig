@@ -1,0 +1,48 @@
+{% extends 'admin/panel.twig' %}
+
+{% block content %}
+		<h1>Komentarze</h1>
+		<hr/>
+		<h2>Panel - Komentarze</h2>
+		
+		<h3 style="background-color: green">{{ flash|raw }}</h3>
+
+		<input type="text" value="Szukaj..."></input>
+				
+		<nav style="float: right;">
+			<a href="/admin/comments?page={{ page_number - 1 }}" >
+				<button {{ (page_number == 1) ? 'disabled' : '' }}>Poprzednie</button>
+			</a>
+			{% for i in 1..pages_count %}
+			<a href="/admin/comments?page={{ i }}" >
+				<button>{{ i }}</button>
+			</a>
+			{% endfor %}
+			<a href="/admin/comments?page={{ page_number + 1 }}">
+				<button  {{ (page_number == pages_count) ? 'disabled' : '' }}>Następne</button>
+			</a>
+		</nav>	
+
+		
+		<table>
+		  <tr>
+			<th>Treść</th>
+			<th>Autor</th>
+			<th>Ocena</th>
+			<th>Opublikowano</th>
+		  </tr>
+		  {% for comment in comments %}
+		  <tr>
+			<td>
+				<p>{{ comment.content}}</p>
+				<a href="/admin/show/post/{{ comment.id }}">Pokaż post z komentarzem</a>
+				<a href="/comment/delete/{{ comment.id }}">Usuń</a>
+			</td>
+			<td>{{ comment.author}}</td>
+			<td>{{ comment.vote}}</td>
+			<td>{{ comment.publishedAt}}</td>
+		  </tr>
+		  {% endfor %}
+		</table>	
+
+{% endblock %}

@@ -12,6 +12,14 @@
 	},
 	"login": true
   },
+  "admin/comments": {
+	"controller": "Admin",
+	"method": "comments",
+	"params": {
+	  "id": "number"
+	},
+	"login": true
+  },
   "admin/show/post/:id": {
 	"controller": "Admin",
 	"method": "showPost",

@@ -38,4 +38,46 @@ class CommentModel extends AbstractModel {
         
         return $stmt->fetchAll();
 	}
+	
+	public function getAllComments(){
+		$stmt = $this->db->prepare('
+            SELECT * FROM comments
+        ');
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Comment');
+        
+        return $stmt->fetchAll();
+	}
+	
+	public function getCommentsByPage($page, $records_per_page) {
+		
+		$totalRecords = $this->getCommentsCount();
+		$pagesCount = ceil($totalRecords/$records_per_page);
+		
+		$offset = ($page - 1) * $records_per_page;
+		$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+		$stmt = $this->db->prepare('
+            SELECT * FROM comments
+			LIMIT :offset, :records_per_page
+        ');
+		$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+		$stmt->bindParam(':records_per_page', $records_per_page, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Comment');
+		
+		return [
+			'records' => $stmt->fetchAll(),
+			'pages_count' => $pagesCount,
+			'total_records' => $totalRecords
+		];
+		
+	}
+	
+	private function getCommentsCount() {
+		$stmt = $this->db->prepare("SELECT count(*) FROM comments");
+		$stmt->execute();
+		$count = $stmt->fetchColumn();
+		
+		return $count;
+	}
 }
